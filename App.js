@@ -428,9 +428,74 @@ class SignUpScreen extends React.Component {
   static navigationOptions = {
     header: null
 }
+state={
+   email:"",
+   username:"",
+   password:"",
+   confirmPassword:""
+}
+async onFetchRegister(email,username,password,confirmPassword){
+  console.log("in onFetchLogin");
+
+  var data={
+    email:"test@a.com",
+    password:"abc",
+    username:"a",
+    confirmPassword:"abc"
+  }
+  try{
+    let response=await fetch("http://192.168.56.1:3000/api/auth/register",
+    {method:"POST",
+  headers:{
+    "X-Requested-width":"XMLHTTPRequest",
+    "Content-Type":"application/json"
+  
+  },
+  body:JSON.stringify(data)
+})
+//.then(res=>res.json())
+//.then(responseJson=>this.dataHandler(responseJson),
+.then(responseJson=>{
+  console.log(responseJson.json())
+},
+
+
+)
+    
+
+  }catch(error){
+    console.log(error)
+
+  }
+}
+dataHandler(data){
+  console.log("in datahandler ", data)
+  // if(data =>{
+  //   data.json()
+  //   if
+  // } ){
+  //   alert("shgvxzhdjfcgh")
+  // }
+}
 state = {
   isModalVisible:false
 };
+
+checRegister(){
+
+  const  {username,password,email,confirmPassword}=this.state 
+  alert("username:"+username +"email:"+email+"password:"+password+"confirmpasswrod:"+confirmPassword)
+  // console.warn(username,password)o
+  /* this.onFetchLogin(username,password)
+  if (username =="admin" && password =="admin"){
+    console.warn("log in succesfull!")
+    alert("correct") */
+    this.props.navigation.navigate('form')
+    this.onFetchRegister(this.email,this.username,this.password,this.confirmPassword)
+  }
+  
+
+  
 
 toggleModal1 = () => {
   this.setState({ isModalVisible:true});
@@ -457,13 +522,15 @@ toggleModal2 = () => {
      
       <TextInput 
       style={styles2.input}
-      placeholder="Enter Username"
+      placeholder="Enter  Email"
+      onChangeText={text =>this.setState({email : text})}
       placeholderTextColor="#efebe9"
       />
         
       <TextInput 
       style={styles2.input}
-      placeholder="Enter Email"
+      placeholder="Enter Username"
+      onChangeText={text =>this.setState({username : text})}
       placeholderTextColor="#efebe9"
       
       />
@@ -472,6 +539,7 @@ toggleModal2 = () => {
       style={styles2.input}
       placeholder="Enter Password"
       secureTextEntry={true}
+      onChangeText={text =>this.setState({password: text})}
       placeholderTextColor="#efebe9"
       />
         
@@ -479,6 +547,7 @@ toggleModal2 = () => {
       style={styles2.input}
       placeholder="Enter Password again"
       secureTextEntry={true}
+      onChangeText={text =>this.setState({confirmPassword : text})}
       placeholderTextColor="#efebe9"
       />
       
@@ -550,7 +619,7 @@ toggleModal2 = () => {
                
         
       <TouchableOpacity
-        onPress={() => this.props.navigation.navigate('Details')}
+        onPress={() => this.checRegister()}
         style={styles2.signInB}             >
         <Text style={styles2.signInBText}>Sign Up</Text>
         </TouchableOpacity>
@@ -693,7 +762,6 @@ class FormOfInterests extends React.Component {
      
       
               
-        
         
         
         
