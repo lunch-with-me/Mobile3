@@ -18,7 +18,7 @@ import RadioForm, {
 } from 'react-native-simple-radio-button';
 import { Test } from "./Register2";
 import {Preference1} from './Preference1';
-//import {DashBoard} from './DashBoard';
+import {DashBoard} from './DashBoard';
 // import console = require("console");
 
 class HomeScreen extends React.Component {
@@ -110,7 +110,7 @@ this.onFetchLogin(username,password)
 if (username =="admin" && password =="admin"){
   console.warn("log in succesfull!")
   alert("correct")
-  this.props.navigation.navigate('Preference')
+  this.props.navigation.navigate('dashboard')
 }
 
 
@@ -139,6 +139,7 @@ async onFetchLogin(username,password){
 //.then(responseJson=>this.dataHandler(responseJson),
 .then(responseJson=>{
   console.log(responseJson.json())
+  alert("success");
 },
 
 
@@ -506,7 +507,7 @@ const AppNavigator = createStackNavigator(
     Home: HomeScreen,
     Details: DetailsScreen,
     SignUp:SignUpScreen,
-   // dashboard:DashBoard,
+   dashboard:DashBoard,
     Preference:Preference1,
     Test1:Test,
   },
@@ -518,6 +519,7 @@ const AppNavigator = createStackNavigator(
     navigationOptions: {
         headerVisible: false,
     },
+     
   }
 );
 
