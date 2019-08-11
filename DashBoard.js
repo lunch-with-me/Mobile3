@@ -68,6 +68,7 @@ const Screen2_StackNavigator = createStackNavigator({
  
   Second: {
     screen: Screen2,
+  
     navigationOptions: ({ navigation }) => ({
       title: 'Notification Settings',
       headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,

@@ -19,6 +19,7 @@ import RadioForm, {
 import { Test } from "./Register2";
 import {Preference1} from './Preference1';
 import {DashBoard} from './DashBoard';
+import {Forgot} from './ForgotPassword';
 // import console = require("console");
 
 class HomeScreen extends React.Component {
@@ -227,7 +228,9 @@ _fbAuth(){
                        checkedColor='rgba(240,208,193,0.6)'
                         />
                 <Text style={{color:"#ffffff"}}>remember me</Text>
-                <TouchableOpacity>
+                <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('f1')}
+                >
                  <Text style={{color:'rgba(240,208,193,0.9)' , marginLeft:40 , fontStyle:'italic'}}>Forgot Password</Text>
                 </TouchableOpacity>
               </View>
@@ -289,34 +292,39 @@ async onFetchRegister(email,username,password,confirmPassword){
   console.log("in onFetchLogin");
 
   var data={
-    email:"test@a.com",
-    password:"abc",
-    username:"a",
-    confirmPassword:"abc"
+    email:email,
+    password:password,
+    username:username,
+    confirmPassword:confirmPassword
+    // email:"test@a.com",
+    // password:"abc",
+    // username:"a",
+    // confirmPassword:"abc"
   }
+
+  console.log("Data in onFetchRegister ", data)
+  
   try{
-    let response=await fetch("http://192.168.56.1:3000/api/auth/register",
+    // let response=await fetch("http://192.168.56.1:3000/users/register",
+    let response=await fetch("http://localhost:8080/users/register",
+
     {method:"POST",
   headers:{
-    "X-Requested-width":"XMLHTTPRequest",
+    // "X-Requested-width":"XMLHTTPRequest",
     "Content-Type":"application/json"
   
   },
   body:JSON.stringify(data)
 })
-//.then(res=>res.json())
-//.then(responseJson=>this.dataHandler(responseJson),
-.then(responseJson=>{
-  console.log(responseJson.json())
-},
-
+.then(res=>res.json())
+.then(responseJson=>this.dataHandler(responseJson),
+// .then(responseJson=>{
+//   console.log(responseJson.json())
+// }
 
 )
-    
-
   }catch(error){
-    console.log(error)
-
+    console.log(" In catch Block ",error)
   }
 }
 dataHandler(data){
@@ -335,14 +343,19 @@ state = {
 checRegister(){
 
   const  {username,password,email,confirmPassword}=this.state 
-  alert("username:"+username +"email:"+email+"password:"+password+"confirmpasswrod:"+confirmPassword)
+  // alert("username:"+username +"email:"+email+"password:"+password+"confirmpasswrod:"+confirmPassword)
+ console.log("In checRegister func")
+  console.log("username:"+username +"email:"+email+"password:"+password+"confirmpasswrod:"+confirmPassword)
+  
+    this.onFetchRegister(email,username,password,confirmPassword)
+
   // console.warn(username,password)
   /* this.onFetchLogin(username,password)
   if (username =="admin" && password =="admin"){
     console.warn("log in succesfull!")
     alert("correct") */
-    this.props.navigation.navigate('form')
-    this.onFetchRegister(this.email,this.username,this.password,this.confirmPassword)
+    // this.props.navigation.navigate('form')
+    // this.onFetchRegister(this.email,this.username,this.password,this.confirmPassword)
   }
   
 
@@ -373,7 +386,7 @@ toggleModal2 = () => {
      
       <TextInput 
       style={styles2.input}
-      placeholder="Enter  Email"
+      placeholder="Enter Email"
       onChangeText={text =>this.setState({email : text})}
       placeholderTextColor="#efebe9"
       />
@@ -470,7 +483,7 @@ toggleModal2 = () => {
                
         
       <TouchableOpacity
-        onPress={() => this.checRegister()}
+        onPress={()=>this.checRegister()}
         style={styles2.signInB}             >
         <Text style={styles2.signInBText}>Sign Up</Text>
         </TouchableOpacity>
@@ -510,6 +523,7 @@ const AppNavigator = createStackNavigator(
    dashboard:DashBoard,
     Preference:Preference1,
     Test1:Test,
+    f1:Forgot,
   },
   {
     initialRouteName: "Home"

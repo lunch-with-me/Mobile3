@@ -14,7 +14,9 @@ const Users = [
 ]
 
 class HomeScreen extends React.Component {
-
+static navigationOption={
+    header:null,
+}
     constructor() {
         super()
     
@@ -118,7 +120,7 @@ class HomeScreen extends React.Component {
                 </Animated.View>
     
                 <Animated.View style={{ opacity: this.dislikeOpacity, transform: [{ rotate: '30deg' }], position: 'absolute', top: 50, right: 40, zIndex: 1000 }}>
-                  <Text style={{ borderWidth: 1, borderColor: 'red', color: 'red', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
+                  <Text style={{ borderWidth: 1, borderColor: 'red', color: 'red', fontSize: 32, fontWeight: '800', padding: 10 }}>SUPER LIKE</Text>
     
                 </Animated.View>
     
@@ -144,7 +146,7 @@ class HomeScreen extends React.Component {
                 </Animated.View>
     
                 <Animated.View style={{ opacity: 0, transform: [{ rotate: '30deg' }], position: 'absolute', top: 50, right: 40, zIndex: 1000 }}>
-                  <Text style={{ borderWidth: 1, borderColor: 'red', color: 'red', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
+                  <Text style={{ borderWidth: 1, borderColor: 'red', color: 'red', fontSize: 32, fontWeight: '800', padding: 10 }}>SUPER LIKE</Text>
     
                 </Animated.View>
     
@@ -161,7 +163,7 @@ class HomeScreen extends React.Component {
       render() {
         return (
           <View style={{ flex: 1 }}>
-            <View style={{ height: 60 }}>
+            <View style={{ height: 60 ,marginTop:0,paddingTop:0}}>
     
             </View>
             <View style={{ flex: 1 }}>
