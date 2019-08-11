@@ -6,7 +6,24 @@ import DatePicker from 'react-native-datepicker';
 
 export  class Forgot  extends React.Component {
    
-     
+    constructor(){
+        super();
+            this.state={
+                email:'',
+                newPassword:'',
+                confirmPassword:'',
+
+            }
+        
+    }
+   // var setNameIdsEs6 = (id, name) => ({ id: id, name: name });
+  
+    passwordMatch(){
+        if(this.state.newPassword!==this.state.confirmPassword){
+          return(<Text style={{color:"tomato"}}>password do not match...</Text>)
+        }
+      }
+   
       static navigationOptions = {
         header: null
     }
@@ -24,7 +41,7 @@ export  class Forgot  extends React.Component {
                 
                 <TextInput  style={stylesP.input}
                     placeholder="email ..."
-             
+                    onChangeText={(text)=>this.setState({email:text})}
               placeholderTextColor="#ddab9c"
                 />
                 
@@ -32,13 +49,16 @@ export  class Forgot  extends React.Component {
                     placeholder=" new password ..."
               secureTextEntry={true} 
               placeholderTextColor="#ddab9c"
+              onChangeText={(text)=>this.setState({newPassword:text})}
                 />
                 
                 <TextInput  style={stylesP.input}
                     placeholder="confirm password ..."
               secureTextEntry={true} 
               placeholderTextColor="#ddab9c"
+              onChangeText={(text)=>this.setState({confirmPassword:text})}
                 />
+                {this.passwordMatch()}
                 <TouchableOpacity onPress={this.result}  style={stylesP.button}><Text style={stylesP.buttonText}>submit</Text></TouchableOpacity>
                 </View>
                 </ImageBackground>
