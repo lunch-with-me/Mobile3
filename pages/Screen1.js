@@ -5,6 +5,8 @@ import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
 //import Icon from 'react-native-vector-icons/Ionicons'
+
+//an array of objects
 const Users = [
   { id: "1", uri: require('./assets/1.jpg') },
   { id: "2", uri: require('./assets/2.jpg') },
@@ -208,12 +210,19 @@ class SuperLikes extends React.Component {
     }
   }
 
-const TabNavigator = createBottomTabNavigator({
+const TabNavigator = createBottomTabNavigator(
+  {
   Profiles: { screen: HomeScreen },
   Likes: { screen: SettingsScreen },
   SuperLikes:{screen:SuperLikes},
   Notification:{screen:Notification},
-  
+  },
+{
+  headerMode: 'none',
+    header: null,
+    navigationOptions: {
+        header: null,
+    }
 });
 
 export default createAppContainer(TabNavigator);

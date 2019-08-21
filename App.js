@@ -1,5 +1,5 @@
 import React from "react";
-import { Button,View, Text ,Picker,ImageBackground,StatusBar,StyleSheet,TextInput,CheckBox,ScrollView,KeyboardAvoidingView
+import { Button,View, Text ,Picker,ImageBackground,StatusBar,StyleSheet,TextInput,CheckBox,ScrollView,KeyboardAvoidingView, ActivityIndicator, AsyncStorage
 } from "react-native";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import { TouchableOpacity,  } from "react-native-gesture-handler";
@@ -102,56 +102,88 @@ class DetailsScreen extends React.Component {
     header: null
 }
   state = {username :"", password:""}
-checkLogin(){
 
+checkLogin(){
 const  {username,password}=this.state 
 console.log("in checkLogin Function "+ username+ " password "+ password)
-// console.warn(username,password)o
-this.onFetchLogin(username,password)
-if (username =="admin" && password =="admin"){
-  console.warn("log in succesfull!")
-  alert("correct")
-  this.props.navigation.navigate('dashboard')
+this.validate(username,password);
 }
 
-
-}
-
-
-async onFetchLogin(username,password){
-  console.log("in onFetchLogin");
-
-  var data={
-    
-    email:"test@a.com",
-    password:"abc"
+validate(username, password){
+  if(username === '' || password === '') {
+    alert(
+      'Username or Password cannot be empty!'
+    );
+  } else {
+    this.loginUser(username,password);
   }
-  try{
-    let response=await fetch("http://192.168.56.1:3000/api/auth/login",
-    {method:"POST",
-  headers:{
-    "X-Requested-width":"XMLHTTPRequest",
-    "Content-Type":"application/json"
+}
+
+loginUser(username, password) {
+  console.log(username, password);
+  fetch('http://10.10.5.144:8080/users/authenticate',{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username: username,
+      password: password,
+    })
+  }).then(response => {
+    console.log(response)
+    if(response.ok){
+      return response.json()
+        .then(resJson => {
+          if(resJson.success) {
+            console.log('ok');
+            // AsyncStorage.setItem('id',resJson.id);
+            // AsyncStorage.setItem('token',resJson.token);
+            this.props.navigation.replace('dashboard');
+          } else {
+            alert(
+              resJson.msg
+            );
+          }
+        })
+    } else(response => {
+      console.log(response);
+      //login errors goes here
+    })
+  });
+}
+
+// async onFetchLogin(username,password){
+//   console.log("in onFetchLogin");
+
+//   var data={
+    
+//     email:"test@a.com",
+//     password:"abc"
+//   }
+//   try{
+//     let response=await fetch("http://10.10.5.144:8080/api/auth/login",
+//     {method:"POST",
+//   headers:{
+//     "X-Requested-width":"XMLHTTPRequest",
+//     "Content-Type":"application/json"
   
-  },
-  body:JSON.stringify(data)
-})
-//.then(res=>res.json())
-//.then(responseJson=>this.dataHandler(responseJson),
-.then(responseJson=>{
-  console.log(responseJson.json())
-  alert("success");
-},
-
-
-)
+//   },
+//   body:JSON.stringify(data)
+// })
+// //.then(res=>res.json())
+// //.then(responseJson=>this.dataHandler(responseJson),
+// .then(responseJson=>{
+//   console.log(responseJson.json())
+//   alert("success");
+// },
+// )
     
+//   }catch(error){
+//     console.log(error)
 
-  }catch(error){
-    console.log(error)
-
-  }
-}
+//   }
+// }
 
 dataHandler(data){
   console.log("in datahandler ", data)
@@ -288,45 +320,65 @@ state={
    password:"",
    confirmPassword:""
 }
-async onFetchRegister(email,username,password,confirmPassword){
-  console.log("in onFetchLogin");
 
+onFetchRegister(email,username,password,confirmPassword){
+  console.log("in onFetchLogin");
   var data={
-    email:email,
+    email:email,  
     password:password,
     username:username,
-    confirmPassword:confirmPassword
-    // email:"test@a.com",
-    // password:"abc",
-    // username:"a",
-    // confirmPassword:"abc"
+    confirmPass:confirmPassword
   }
-
   console.log("Data in onFetchRegister ", data)
+  this.signupUser(data);
   
-  try{
-    // let response=await fetch("http://192.168.56.1:3000/users/register",
-    let response=await fetch("http://localhost:8080/users/register",
+//   try{
+//     // let response=await fetch("http://192.168.56.1:3000/users/register",
+//     let response=await fetch("http://localhost:8080/users/register",
 
-    {method:"POST",
-  headers:{
-    // "X-Requested-width":"XMLHTTPRequest",
-    "Content-Type":"application/json"
-  
-  },
-  body:JSON.stringify(data)
-})
-.then(res=>res.json())
-.then(responseJson=>this.dataHandler(responseJson),
+//     {
+//       method:"POST",
+//       headers:{
+//         "Content-Type":"application/json"
+//       },
+//       body:JSON.stringify(data)
+// })
+// .then(res=>res.json())
+// .then(responseJson=>this.dataHandler(responseJson),
 // .then(responseJson=>{
 //   console.log(responseJson.json())
 // }
 
-)
-  }catch(error){
-    console.log(" In catch Block ",error)
-  }
+// )
+//   }catch(error){
+//     console.log(" In catch Block ",error)
+//   } 
 }
+
+signupUser(data) {
+  console.log('data', data);
+  fetch('http://10.10.5.144:8080/users/register',{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data)
+  }).then(response => {
+    if(response.ok){
+      return response.json()
+        .then(resJson => {
+          console.log(resJson.user);
+          this.props.navigation.pop();
+        })
+    } else(response => {
+      console.log(response);
+      //signup errors goes here
+    })
+  }).catch(err => {
+
+  });
+}
+
 dataHandler(data){
   console.log("in datahandler ", data)
   // if(data =>{
@@ -530,8 +582,9 @@ const AppNavigator = createStackNavigator(
   },
   {
     headerMode: 'none',
+    header: null,
     navigationOptions: {
-        headerVisible: false,
+        header: null,
     },
      
   }

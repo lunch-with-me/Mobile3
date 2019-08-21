@@ -7,8 +7,8 @@
  */
 
 import React, { Component } from 'react';
-import { DrawerItems, SafeAreaView } from 'react-navigation';
-import { View, Image, Platform,StyleSheet,ImageBackground,ScrollView ,TouchableOpacity,Text} from 'react-native';
+import { DrawerItems, SafeAreaView, } from 'react-navigation';
+import { View, Image, Platform,StyleSheet,ImageBackground,ScrollView ,TouchableOpacity,Text, AsyncStorage} from 'react-native';
 
 import {
   createDrawerNavigator,
@@ -26,6 +26,11 @@ import Preferences from './pages/Preferences';
  
 class NavigationDrawerStructure extends Component {
     
+  // constructor(props){
+  //   super(props);
+  //   AsyncStorage.getItem('id').then(id => {
+  //   })
+  // }
   toggleDrawer = () => {
     
     this.props.navigationProps.toggleDrawer();
